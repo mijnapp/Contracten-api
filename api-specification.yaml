@@ -39,69 +39,38 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Contract'
-  /api/personen/{bsn}/contracten/{id}:
-    get:
-      tags:
-      - Contracten
-      parameters:
-      - name: bsn
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          nullable: true
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          format: uuid
-      - name: version
-        in: header
-        required: false
-        style: simple
-        explode: false
-        schema:
-          type: string
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contract'
 components:
   schemas:
     Contract:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-        bsn:
-          type: string
-          nullable: true
         identificatie:
           type: string
           nullable: true
+          description: Unieke sleutel binnen de bron
+        bsn:
+          type: string
+          nullable: true,
+          description: Unieke sleutel van een persoon
         titel:
           type: string
-          nullable: true
-        omschrijving:
+          nullable: true,
+          description: De titel van het contract
+        status:
           type: string
-          nullable: true
+          nullable: true,
+          description: De status van het contract
         beginDatum:
           type: string
           format: date-time
-          nullable: true
+          nullable: true,
+          description: De datum waarop het contract in gaat
         eindDatum:
           type: string
           format: date-time
-          nullable: true
-        type:
+          nullable: true,
+          description: De datum waarop het contract afloopt
+        organisatie:
           type: string
-          nullable: true
+          nullable: true,
+          description: De organisatie met wie deze persoon het contract heeft afgesproken
