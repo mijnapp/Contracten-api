@@ -9,7 +9,8 @@ namespace ContractApi.Api
     public class ContractController : ControllerBase
     {
         [Route("api/personen/{bsn}/contracten")]
-        public IActionResult GetAllContracts()
+        [HttpGet]
+        public List<Contract> GetAllContracts()
         {
             var contracts = new List<Contract>
             {
@@ -32,7 +33,7 @@ namespace ContractApi.Api
                     Organisatie = "Solviteers"
                 }
             };
-            return new JsonResult(contracts);
+            return contracts;
         }
     }
 }
