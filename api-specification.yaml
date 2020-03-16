@@ -1,0 +1,107 @@
+openapi: 3.0.1
+info:
+  title: Contracten
+  description: Contracten API
+  contact:
+    name: Test
+  version: v0.1
+servers:
+- url: /
+security:
+- {}
+paths:
+  /api/personen/{bsn}/contracten:
+    get:
+      tags:
+      - Contracten
+      parameters:
+      - name: bsn
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: version
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contract'
+  /api/personen/{bsn}/contracten/{id}:
+    get:
+      tags:
+      - Contracten
+      parameters:
+      - name: bsn
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: version
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contract'
+components:
+  schemas:
+    Contract:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        bsn:
+          type: string
+          nullable: true
+        identificatie:
+          type: string
+          nullable: true
+        titel:
+          type: string
+          nullable: true
+        omschrijving:
+          type: string
+          nullable: true
+        beginDatum:
+          type: string
+          format: date-time
+          nullable: true
+        eindDatum:
+          type: string
+          format: date-time
+          nullable: true
+        type:
+          type: string
+          nullable: true
