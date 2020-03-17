@@ -69,8 +69,24 @@ namespace ContractApi
                     Version = ApiVersion,
                     Description = $"Een standaard voor gegevensuitwisseling tussen MijnApp en de contracten aanbieders. {Environment.NewLine}{Environment.NewLine}",
                     Contact = new OpenApiContact { Name = "Solviteers Helpdesk" }
-                }); ;
-
+                });
+                c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Description = "Please enter the ApiKey",
+                    Name = "Authorization"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "ApiKey" }
+                        },
+                        new string[]{}
+                    }
+                });
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -96,6 +112,5 @@ namespace ContractApi
                 c.RoutePrefix = "api";
             });
         }
-
     }
 }

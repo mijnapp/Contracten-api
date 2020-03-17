@@ -1,10 +1,12 @@
-﻿using ContractApi.Model;
+﻿using ContractApi.Filters;
+using ContractApi.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 
-namespace ContractApi.Api
+namespace ContractApi.Api 
 {
+    [ApiKeyAuthorize]
     [ApiController]
     public class ContractController : ControllerBase
     {
