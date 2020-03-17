@@ -1,40 +1,27 @@
 ﻿using ContractApi.Filters;
 using ContractApi.Model;
+using ContractApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace ContractApi.Api 
+namespace ContractApi.Api
 {
     [ApiKeyAuthorize]
     [ApiController]
     public class ContractController : ControllerBase
     {
+        private readonly ContractService _contractService;
+        public ContractController(ContractService contractService)
+        {
+            _contractService = contractService;
+        }
+
         [Route("api/personen/{bsn}/contracten")]
         [HttpGet]
-        public List<Contract> GetAllContracts()
+        public async Task<IList<Contract>> GetAllContractsAsync(string bsn)
         {
-            var contracts = new List<Contract>
-            {
-                new Contract
-                {
-                    Identificatie = Guid.NewGuid().ToString(),
-                    Titel = "Integraal - plan",
-                    Status = "actief",
-                    BeginDatum = DateTime.Now.AddMonths(-4),
-                    EindDatum = DateTime.Now.AddMonths(4),
-                    Organisatie = "Solviteers"
-                },
-                new Contract
-                {
-                    Identificatie = Guid.NewGuid().ToString(),
-                    Titel = "Burger - plan",
-                    Status = "actief",
-                    BeginDatum = DateTime.Now.AddMonths(-4),
-                    EindDatum = DateTime.Now.AddMonths(4),
-                    Organisatie = "Solviteers"
-                }
-            };
+            var contracts = await _contractService.GetAllContractForBsnAsync(bsn);
             return contracts;
         }
     }

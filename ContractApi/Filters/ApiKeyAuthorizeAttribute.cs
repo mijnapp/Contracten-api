@@ -10,7 +10,7 @@ namespace ContractApi.Filters
     public class ApiKeyAuthorizeAttribute : Attribute, IAsyncActionFilter
     {
         public const string ApiKeyHeader = "Authorization";
-        public const string ApiKeyConfiguration = "Api:ApiKey";
+        public const string ApiKeyConfiguration = "Api:OwnApiKey";
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {

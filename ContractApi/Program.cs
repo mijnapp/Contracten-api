@@ -1,3 +1,4 @@
+using ContractApi.Services;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,8 +32,11 @@ namespace ContractApi
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public static void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
         {
+            services.AddSingleton(context.Configuration);
+            services.AddTransient<ReferencedApiService>();
+            services.AddTransient<ContractService>();
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddSwagger();
             services.AddControllers();
@@ -67,7 +71,7 @@ namespace ContractApi
                 {
                     Title = "Contracten koppeling",
                     Version = ApiVersion,
-                    Description = $"Een standaard voor gegevensuitwisseling tussen MijnApp en de contracten aanbieders. {Environment.NewLine}{Environment.NewLine}",
+                    Description = $"Een standaard voor gegevensuitwisseling tussen MijnApp en de contracten aanbieders.",
                     Contact = new OpenApiContact { Name = "Solviteers Helpdesk" }
                 });
                 c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
