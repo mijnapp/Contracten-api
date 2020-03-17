@@ -6,7 +6,7 @@ services:
     ports:
       - 8040:8080
     environment:
-      - SWAGGER_JSON=/oas3/api-specification.yml
+      - SWAGGER_JSON=/oas3/api-specification.yaml
     volumes:
       - ./:/oas3
       - ./headers:/usr/share/nginx/html/headers
@@ -16,20 +16,20 @@ services:
       - ./schemas:/usr/share/nginx/html/schemas
       - ./security_schemes:/usr/share/nginx/html/security_schemes
 
-  redoc:
-    image: redocly/redoc
-    ports:
-      - 8041:80
-    environment:
-      - SPEC_URL=api-specification.yml
-    volumes:
-      - ./api-specification.yml:/usr/share/nginx/html/api-specification.yml:ro
-      - ./headers:/usr/share/nginx/html/headers
-      - ./parameters:/usr/share/nginx/html/parameters
-      - ./paths:/usr/share/nginx/html/paths
-      - ./responses:/usr/share/nginx/html/responses
-      - ./schemas:/usr/share/nginx/html/schemas
-      - ./security_schemes:/usr/share/nginx/html/security_schemes
+#  redoc:
+#    image: redocly/redoc
+#    ports:
+#      - 8041:80
+#    environment:
+#      - SPEC_URL=api-specification.yaml
+#   volumes:
+#     - ./api-specification.yaml:/usr/share/nginx/html/api-specification.yaml:ro
+#     - ./headers:/usr/share/nginx/html/headers
+#     - ./parameters:/usr/share/nginx/html/parameters
+#     - ./paths:/usr/share/nginx/html/paths
+#     - ./responses:/usr/share/nginx/html/responses
+#     - ./schemas:/usr/share/nginx/html/schemas
+#     - ./security_schemes:/usr/share/nginx/html/security_schemes
 
   ### If preferred or needed, uncomment the lines below to start the Swagger-editor
   ### Beware, the editor does not load the api-spec by default, nor saves it.
