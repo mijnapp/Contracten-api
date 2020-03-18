@@ -34,6 +34,10 @@ namespace ContractApi.Services
         }
         public async Task<IList<Contract>> GetListOfContract(ReferencedApiModel api, string bsn)
         {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
             try { 
                 using var client = new HttpClient
                 {
@@ -48,7 +52,8 @@ namespace ContractApi.Services
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        return await JsonSerializer.DeserializeAsync<IList<Contract>>(await response.Content.ReadAsStreamAsync());
+                        var contracts = await JsonSerializer.DeserializeAsync<IList<Contract>>(await response.Content.ReadAsStreamAsync(), options);
+                        return contracts;
                     }
                     else
                     {
