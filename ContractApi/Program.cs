@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System;
 using System.IO;
 using System.Reflection;
@@ -21,12 +22,28 @@ namespace ContractApi
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
             var host = WebHost.CreateDefaultBuilder(args)
-                              .ConfigureServices(ConfigureServices)
-                              .Configure(ConfigureApplication)
-                              .Build();
+                .UseSerilog()
+                .ConfigureServices(ConfigureServices)
+                .Configure(ConfigureApplication)
+                .Build();
 
-            host.Run();
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(host.Services.GetRequiredService<IConfiguration>())
+                .CreateLogger();
 
+            try
+            {
+                Log.Information("Starting ContractApi");
+                host.Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "ContractApi terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
 
@@ -47,16 +64,15 @@ namespace ContractApi
         public static void ConfigureApplication(IApplicationBuilder app)
         {
             var env = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSerilogRequestLogging();
 
             app.UseHttpsRedirection();
             app.UseSwagger();
-
 
             app.UseRouting();
             app.UseEndpoints(endpoints => endpoints.MapControllers());

@@ -1,4 +1,5 @@
 ﻿using ContractApi.Model;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,12 @@ namespace ContractApi.Services
     public class ContractService
     {
         private readonly ReferencedApiService _referencedApiService;
+        private readonly ILogger<ContractService> _logger;
 
-        public ContractService(ReferencedApiService referencedApiService)
+        public ContractService(ReferencedApiService referencedApiService, ILogger<ContractService> logger)
         {
             _referencedApiService = referencedApiService;
+            _logger = logger;
         }
 
         public async Task<IList<Contract>> GetAllContractForBsnAsync(string bsn)
@@ -57,13 +60,14 @@ namespace ContractApi.Services
                     }
                     else
                     {
-                        Console.WriteLine("Internal server Error");
+                        _logger.LogError($"Api {api.Name} returned statuscode: {response.StatusCode}");
                     }
                 }
                 return null;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e, $"Api exception for {api.Name}");
                 return null;
             }
         }
