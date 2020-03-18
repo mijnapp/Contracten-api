@@ -8,7 +8,7 @@ info:
 servers:
 - url: /
 security:
-- {}
+ - { "ApiKey" }
 paths:
   /api/personen/{bsn}/contracten:
     get:
@@ -74,3 +74,9 @@ components:
           type: string
           nullable: true,
           description: De organisatie met wie deze persoon het contract heeft afgesproken
+  securitySchemes:
+    ApiKey:
+     type: "ApiKey"
+     description: Please enter the ApiKey"
+     name: "Authorization"
+     in: "header"
