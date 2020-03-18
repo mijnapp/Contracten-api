@@ -6,7 +6,7 @@ info:
     name: Test
   version: v0.1
 servers:
-- url: /
+- url: https://contracten-api-master-test.azurewebsites.net/
 security:
  - ApiKey: []
 paths:
